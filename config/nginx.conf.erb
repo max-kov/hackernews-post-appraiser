@@ -34,9 +34,9 @@ http {
 		listen <%= ENV["PORT"] %>;
 		server_name _;
 		keepalive_timeout 5;
+        root /app;
 
 		location / {
-            root /;
             index index.html;
 		}
 	}
