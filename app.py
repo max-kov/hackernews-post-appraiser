@@ -3,11 +3,6 @@ from flask import Flask, request
 application = Flask(__name__)
 
 
-@application.route('/')
-def index():
-    return "<h1>Welcome to our server</h1>"
-
-
 @application.route("/score-post", methods=["POST"])
 def score_post():
     payload = request.args.get("title")
