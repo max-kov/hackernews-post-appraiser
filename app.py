@@ -3,7 +3,7 @@ from flask import Flask, request
 application = Flask(__name__)
 
 
-@application.route("/score-post", methods=["POST"])
+@application.route("/api/score-post", methods=["POST"])
 def score_post():
     payload = request.args.get("title")
     # Make the score equal the length of the title for now
