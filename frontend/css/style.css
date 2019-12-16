@@ -23,3 +23,9 @@ input.post-title {
     color: var(--fg-color);
 }
 
+div.container {
+    display: flex;
+    align-content: space-between;
+    justify-content: space-evenly;
+}
+
