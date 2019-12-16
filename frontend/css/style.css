@@ -4,3 +4,7 @@
     --colour1: rgb(68, 187, 164);
     --colour2: rgb(231, 187, 65);
 }
+
+body {
+  background-color: var(--bg-color);
+}
