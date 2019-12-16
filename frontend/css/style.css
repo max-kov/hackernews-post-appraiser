@@ -1,12 +1,13 @@
 :root {
     --fg-color: rgb(57, 62, 65);
     --bg-color: rgb(255, 255, 255);
-    --colour1: rgb(68, 187, 164);
-    --colour2: rgb(231, 187, 65);
+    --color1: rgb(68, 187, 164);
+    --color2: rgb(231, 187, 65);
+    --color3: rgba(211, 208, 203, 1);
 }
 
 body {
-  background-color: var(--bg-color);
+    background-color: var(--bg-color);
 }
 
 h1 {
