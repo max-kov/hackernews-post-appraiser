@@ -8,3 +8,9 @@
 body {
   background-color: var(--bg-color);
 }
+
+h1 {
+    color: var(--fg-color);
+    display: flex;
+    justify-content: space-around;
+}
