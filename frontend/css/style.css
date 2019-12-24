@@ -27,5 +27,8 @@ div.container {
     display: flex;
     align-content: space-between;
     justify-content: space-evenly;
+    flex-flow: column;
+    width: 80%;
+    margin: auto;
 }
 
