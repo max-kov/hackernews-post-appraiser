@@ -1,1 +1,1 @@
-npx babel frontend/js --out-dir frontend --presets react-app/prod
+npx babel frontend/src --out-dir frontend --presets react-app/prod
