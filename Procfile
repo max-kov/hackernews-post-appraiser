@@ -1,1 +1,1 @@
-web: ./app_preprocess.sh
+web: ./app_start.sh
