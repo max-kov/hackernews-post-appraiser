@@ -7,14 +7,33 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputValue: ""
+      inputValue: "",
+      score: '0',
+      wasFetched: false,
     };
   }
 
   handleChange = event => {
-    this.setState({
-      inputValue: event.target.value
+    const self = this;
+
+    self.setState({
+      inputValue: event.target.value,
     });
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/score-post');
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+        self.setState({
+          score: xhr.responseText,
+          wasFetched: true,
+        });
+      }
+    }
+
+    xhr.send(JSON.stringify(event.target.value));
   };
 
   render() {
@@ -22,7 +41,7 @@ class App extends React.Component {
       <div className="container" onChange={this.handleChange}>
         <h1>Hackernews post appraiser.</h1>
         <TitleTextArea/>
-        <Score titleText={this.state.inputValue}/>
+        {this.state.wasFetched && <Score score={this.state.score}/>}
       </div>
     )
   }
