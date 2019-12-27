@@ -5,3 +5,5 @@ config/__pycache__/
 model/tools/data.csv
 
 frontend/js/
+node_modules/
+package-lock.json
