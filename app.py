@@ -5,10 +5,10 @@ application = Flask(__name__)
 
 @application.route("/api/score-post", methods=["POST"])
 def score_post():
-    payload = request.args.get("title")
+    payload = request.get_json()
     # Make the score equal the length of the title for now
     score = len(payload)
-    return score
+    return str(score)
 
 
 if __name__ == "__main__":
