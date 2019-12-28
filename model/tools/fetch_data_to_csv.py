@@ -15,5 +15,7 @@ with open('data.csv', 'w', newline='') as file:
     writer = csv.DictWriter(file, fieldnames=csv_columns, extrasaction='ignore')
     writer.writeheader()
     for response in responses:
-        data = json.loads(response.content)
-        writer.writerow(data)
+        if (response is not None and response.status_code == requests.codes.ok):
+            data = json.loads(response.content)
+            if (data is not None):
+                writer.writerow(data)
