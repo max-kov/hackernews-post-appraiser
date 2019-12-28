@@ -17,5 +17,5 @@ with open('data.csv', 'w', newline='') as file:
     for response in responses:
         if (response is not None and response.status_code == requests.codes.ok):
             data = json.loads(response.content)
-            if (data is not None):
+            if (data is not None and data["type"]=="story"):
                 writer.writerow(data)
