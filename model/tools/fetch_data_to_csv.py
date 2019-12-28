@@ -8,7 +8,7 @@ max_item = json.loads(requests.get("https://hacker-news.firebaseio.com/v0/maxite
 csv_columns = ['by', 'id', 'score', 'url', 'title', 'time', 'type']
 entries_to_fetch = 1000
 
-request_urls = (grequests.get(api_url.format(i)) for i in range(max_item-entries_to_fetch, max_item))
+request_urls = (grequests.get(api_url.format(i), timeout=1) for i in range(max_item-entries_to_fetch, max_item))
 responses = grequests.map(request_urls)
 
 with open('data.csv', 'w', newline='') as file:
