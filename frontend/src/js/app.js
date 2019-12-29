@@ -17,6 +17,7 @@ class App extends React.Component {
 
   // arrow function is important here, so that we dont redifine 'this'
   handleChange = event => {
+    // TODO: put a rate limit on the requests
     const self = this;
 
     const newTitle = event.target.value;
