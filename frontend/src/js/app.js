@@ -23,20 +23,20 @@ class App extends React.Component {
       inputValue: newTitle,
     });
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/api/score-post');
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    var scoreXhr = new XMLHttpRequest();
+    scoreXhr.open('POST', '/api/score-post');
+    scoreXhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+    scoreXhr.onreadystatechange = () => {
+      if (scoreXhr.readyState === XMLHttpRequest.DONE && scoreXhr.status === 200) {
         self.setState({
-          score: xhr.responseText,
+          score: scoreXhr.responseText,
           wasFetched: true,
         });
       }
     }
 
-    xhr.send(JSON.stringify(newTitle));
+    scoreXhr.send(JSON.stringify(newTitle));
   };
 
   render() {
