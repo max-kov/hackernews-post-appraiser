@@ -17,8 +17,10 @@ class App extends React.Component {
   handleChange = event => {
     const self = this;
 
+    const newTitle = event.target.value;
+
     self.setState({
-      inputValue: event.target.value,
+      inputValue: newTitle,
     });
 
     var xhr = new XMLHttpRequest();
@@ -34,7 +36,7 @@ class App extends React.Component {
       }
     }
 
-    xhr.send(JSON.stringify(event.target.value));
+    xhr.send(JSON.stringify(newTitle));
   };
 
   render() {
