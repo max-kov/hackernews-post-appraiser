@@ -2,6 +2,7 @@
 
 import Score from "./score.js"
 import TitleTextArea from "./title-text-area.js"
+import SimilarPostsTable from "./similar-posts-table.js"
  
 class App extends React.Component {
   constructor(props) {
@@ -59,6 +60,7 @@ class App extends React.Component {
         <h1>Hackernews post appraiser.</h1>
         <TitleTextArea/>
         {this.state.wasFetched && <Score score={this.state.score}/>}
+        <SimilarPostsTable posts={this.state.similarPosts}/>
       </div>
     )
   }
