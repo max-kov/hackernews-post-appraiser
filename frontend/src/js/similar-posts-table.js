@@ -12,7 +12,7 @@ class SimilarPostsTable extends React.Component {
       return null;
     }
 
-    return tableEntries.map((row) => {
+    const tableRows = tableEntries.map((row) => {
       return (
         <tr>
           <td>{row.title}</td>
@@ -20,6 +20,8 @@ class SimilarPostsTable extends React.Component {
         </tr>
       )
     }); 
+
+    return <table>{tableRows}</table>;
   }
 }
 
