@@ -13,6 +13,7 @@ class App extends React.Component {
     };
   }
 
+  // arrow function is important here, so that we dont redifine 'this'
   handleChange = event => {
     const self = this;
 
