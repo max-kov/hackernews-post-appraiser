@@ -21,7 +21,7 @@ class SimilarPostsTable extends React.Component {
       )
     }); 
 
-    return <table>{tableRows}</table>;
+    return <table><tbody>{tableRows}</tbody></table>;
   }
 }
 
