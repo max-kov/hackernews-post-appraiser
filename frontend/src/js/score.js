@@ -6,7 +6,11 @@ class Score extends React.Component {
   }
 
   render() {
-    return <span>{this.props.score}</span>;
+    return (
+      <div>
+        <h4>I think your post will receive {this.props.score} points</h4>
+      </div>
+    );
   }
 }
 
