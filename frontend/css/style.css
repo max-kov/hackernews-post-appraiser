@@ -33,3 +33,6 @@ div.container {
     margin: auto;
 }
 
+table.posts-table {
+    width: 100%;
+}

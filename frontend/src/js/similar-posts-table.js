@@ -24,7 +24,7 @@ class SimilarPostsTable extends React.Component {
     return (
       <div>
         <span>Similar posts:</span>
-        <table><tbody>{tableRows}</tbody></table>;
+        <table class="posts-table"><tbody>{tableRows}</tbody></table>
       </div>
     )
   }
