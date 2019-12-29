@@ -14,7 +14,7 @@ class SimilarPostsTable extends React.Component {
 
     const tableRows = tableEntries.map((row) => {
       return (
-        <tr>
+        <tr key={row.objectID}>
           <td>{row.title}</td>
           <td>{row.points}</td>
         </tr>
