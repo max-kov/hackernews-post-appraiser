@@ -15,8 +15,8 @@ class SimilarPostsTable extends React.Component {
     const tableRows = tableEntries.map((row) => {
       return (
         <tr key={row.objectID}>
-          <td class="post-title">{row.title}</td>
-          <td class="post-score">{row.points}</td>
+          <td class="post-title" align="left">{row.title}</td>
+          <td class="post-score" align="right">{row.points}</td>
         </tr>
       )
     }); 
