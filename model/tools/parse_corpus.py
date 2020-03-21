@@ -35,3 +35,5 @@ model = LinearRegression().fit(X,y.ravel())
 import joblib
 
 joblib.dump(model, "model.sav")
+joblib.dump(scaler, "scaler.sav")
+joblib.dump(vectorizer, "vectorizer.sav")
