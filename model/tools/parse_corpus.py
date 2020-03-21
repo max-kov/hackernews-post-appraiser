@@ -22,3 +22,16 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 vectorizer = TfidfVectorizer(stop_words=stop_words, tokenizer=tokenizer.tokenize, preprocessor=stemmer.stem)
 X = vectorizer.fit_transform(df.title)
+
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+y = scaler.fit_transform(df[["score"]])
+
+from sklearn.linear_model import LinearRegression
+
+model = LinearRegression().fit(X,y.ravel())
+
+import joblib
+
+joblib.dump(model, "model.sav")
