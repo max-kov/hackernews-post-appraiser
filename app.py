@@ -1,4 +1,5 @@
 from flask import Flask, request
+from model import model
 
 application = Flask(__name__)
 
@@ -6,8 +7,7 @@ application = Flask(__name__)
 @application.route("/api/score-post", methods=["POST"])
 def score_post():
     payload = request.get_json()
-    # Make the score equal the length of the title for now
-    score = len(payload)
+    score = model.predict(payload)
     return str(score)
 
 
