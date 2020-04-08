@@ -1,38 +1,42 @@
 import pandas as pd
-import string
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+import joblib
 
-import nltk
-nltk.download('stopwords')
-nltk.download('udhr')
 
-from nltk.corpus import stopwords 
-from nltk.tokenize import TweetTokenizer
-from nltk.stem import SnowballStemmer 
+def get_stopwords():
+    import nltk
+    nltk.download('stopwords')
+    from nltk.corpus import stopwords
+    return stopwords.words("english")
 
-stop_words = stopwords.words("english")
+
+def get_tokenizer():
+    import nltk
+    nltk.download('udhr')
+    from nltk.tokenize import TweetTokenizer
+
+    return TweetTokenizer(preserve_case=False)
+
+
+def get_stemmer():
+    import nltk
+    nltk.download('udhr')
+    from nltk.stem import SnowballStemmer
+    return SnowballStemmer("english", ignore_stopwords=True)
+
+
 df = pd.read_csv("data.csv")
-
-translator = str.maketrans("", "", string.punctuation) 
-tokenizer = TweetTokenizer(preserve_case=False)
-stemmer = SnowballStemmer("english", ignore_stopwords=True)
-
 df = df.dropna(subset=["title"])
 
-from sklearn.feature_extraction.text import TfidfVectorizer
-
-vectorizer = TfidfVectorizer(stop_words=stop_words, tokenizer=tokenizer.tokenize, preprocessor=stemmer.stem)
+vectorizer = TfidfVectorizer(stop_words=get_stopwords(), tokenizer=tokenizer.tokenize, preprocessor=stemmer.stem)
 X = vectorizer.fit_transform(df.title)
-
-from sklearn.preprocessing import StandardScaler
 
 scaler = StandardScaler()
 y = scaler.fit_transform(df[["score"]])
 
-from sklearn.linear_model import LinearRegression
-
-model = LinearRegression().fit(X,y.ravel())
-
-import joblib
+model = LinearRegression().fit(X, y.ravel())
 
 joblib.dump(model, "model.sav")
 joblib.dump(scaler, "scaler.sav")
