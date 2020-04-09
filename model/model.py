@@ -1,7 +1,7 @@
 import joblib
 import pathlib
 
-model_folder = pathlib.Path(__file__).parent / "tools"
+model_folder = pathlib.Path(__file__).parent / "model_files"
 model = joblib.load(model_folder / "model.sav")
 vectorizer = joblib.load(model_folder / "vectorizer.sav")
 scaler = joblib.load(model_folder / "scaler.sav")
