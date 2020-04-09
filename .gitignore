@@ -3,6 +3,7 @@
 __pycache__/
 config/__pycache__/
 model/tools/data.csv
+model/tools/data
 
 frontend/js/
 node_modules/
