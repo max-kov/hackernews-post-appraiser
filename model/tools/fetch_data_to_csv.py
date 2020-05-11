@@ -17,7 +17,7 @@ while 1:
 
     if not os.path.exists(f_name):
         request_urls = (grequests.get(api_url.format(i), timeout=1) for i in
-                        range(max_item - entries_to_fetch, max_item))
+                        range(cur_item - entries_to_fetch, cur_item))
         responses = grequests.map(request_urls)
 
         with open(f_name, 'w', newline='') as file:
