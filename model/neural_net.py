@@ -68,5 +68,22 @@ class Model(nn.Module):
 
         return out, hidden
 
+
+def feed_title(model, title):
+    hidden = torch.zeros(model.hidden_size)
+    out = -1
+
+    for word_id in title:
+        tensor = torch.sparse.FloatTensor(torch.tensor([[word_id]]).t(),
+                                          torch.tensor([1.]),
+                                          torch.Size([vector_size]))
+        out, hidden = model.forward(tensor, hidden)
+
+    if out == -1:
+        raise Exception("The title cant be empty!")
+
+    return out
+
+
 criterion = nn.SmoothL1Loss()
 optimizer = optim.SGD(model.parameters(), lr=0.001)
