@@ -42,3 +42,29 @@ def process_titles(data):
 
 X, word_table = process_titles(df.title)
 y = df.score
+
+torch.manual_seed(1)
+
+
+class Model(nn.Module):
+    def __init__(self, input_size):
+        super(Model, self).__init__()
+
+        self.input_size = input_size
+        self.input_l2_size = 100
+        self.hidden_size = 1000
+
+        self.input_to_input_l2 = nn.Linear(self.input_size, self.input_l2_size)
+        self.combined_to_hidden = nn.Linear(self.input_l2_size + self.hidden_size, self.hidden_size)
+        self.combined_to_out = nn.Linear(self.input_l2_size + self.hidden_size, 1)
+
+    def forward(self, input_word, hidden):
+        input_l2 = self.input_to_input_l2(input_word)
+        combined = torch.cat((input_l2, hidden))
+        hidden = self.combined_to_hidden(combined)
+
+        new_combined = torch.cat((input_l2, hidden))
+        out = self.combined_to_out(new_combined)
+
+        return out, hidden
+
