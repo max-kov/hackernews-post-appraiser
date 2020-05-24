@@ -68,3 +68,5 @@ class Model(nn.Module):
 
         return out, hidden
 
+criterion = nn.SmoothL1Loss()
+optimizer = optim.SGD(model.parameters(), lr=0.001)
