@@ -85,5 +85,28 @@ def feed_title(model, title):
     return out
 
 
+data_point_count = df.shape[0]
+model = Model(vector_size)
+
 criterion = nn.SmoothL1Loss()
 optimizer = optim.SGD(model.parameters(), lr=0.001)
+
+print("Starting training - word vector length = {}, data points = {}".format(vector_size, data_point_count))
+
+total_loss = torch.autograd.Variable(torch.zeros(1), requires_grad=True)
+sentances = X.groupby(level=0)
+
+for i, sample in sentances:
+    out = feed_title(model, sample)
+    loss = criterion(out, torch.tensor([y[i]]))
+    total_loss = total_loss + loss
+
+    if i % 50 == 0:
+        optimizer.zero_grad()
+        total_loss.backward()
+        optimizer.step()
+        total_loss = torch.autograd.Variable(torch.zeros(1), requires_grad=True)
+
+    if i % 1000 == 1:
+        print("{} out of {}, Sample \"{}\", score = {}, predicted score {},  loss = {}"
+              .format(i, data_point_count, df.title[i], df.score[i], out[0], loss))
