@@ -110,7 +110,3 @@ for i, sample in sentances:
     if i % 1000 == 1:
         print("{} out of {}, Sample \"{}\", score = {}, predicted score {},  loss = {}"
               .format(i, data_point_count, df.title[i], df.score[i], out[0], loss))
-
-model_to_file.save_model(model, "model_files/model")
-model_to_file.save_model(scaler, "model_files/scaler")
-model_to_file.save_model(vectorizer, "model_files/vectorizer")
