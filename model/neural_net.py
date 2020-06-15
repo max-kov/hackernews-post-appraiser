@@ -51,38 +51,24 @@ class Model(nn.Module):
         super(Model, self).__init__()
 
         self.input_size = input_size
-        self.input_l2_size = 100
         self.hidden_size = 1000
+        self.embedding_size = 1000
 
-        self.input_to_input_l2 = nn.Linear(self.input_size, self.input_l2_size)
-        self.combined_to_hidden = nn.Linear(self.input_l2_size + self.hidden_size, self.hidden_size)
-        self.combined_to_out = nn.Linear(self.input_l2_size + self.hidden_size, 1)
+        self.embedding = nn.Embedding(self.input_size, self.embedding_size)
+        self.combined_to_hidden = nn.Linear(self.embedding_size + self.hidden_size, self.hidden_size)
+        self.hidden_to_out = nn.Linear(self.hidden_size, 1)
 
-    def forward(self, input_word, hidden):
-        input_l2 = self.input_to_input_l2(input_word)
-        combined = torch.cat((input_l2, hidden))
-        hidden = self.combined_to_hidden(combined)
+    def forward(self, input_sentence):
+        hidden = torch.zeros(self.hidden_size)
+        embeddings = self.embedding(input_sentence)
 
-        new_combined = torch.cat((input_l2, hidden))
-        out = self.combined_to_out(new_combined)
+        for word in embeddings:
+            combined = torch.cat((word, hidden))
+            hidden = self.combined_to_hidden(combined)
 
-        return out, hidden
+        out = self.hidden_to_out(hidden)
 
-
-def feed_title(model, title):
-    hidden = torch.zeros(model.hidden_size)
-    out = -1
-
-    for word_id in title:
-        tensor = torch.sparse.FloatTensor(torch.tensor([[word_id]]).t(),
-                                          torch.tensor([1.]),
-                                          torch.Size([vector_size]))
-        out, hidden = model.forward(tensor, hidden)
-
-    if out == -1:
-        raise Exception("The title cant be empty!")
-
-    return out
+        return out
 
 
 data_point_count = df.shape[0]
@@ -94,10 +80,10 @@ optimizer = optim.SGD(model.parameters(), lr=0.001)
 print("Starting training - word vector length = {}, data points = {}".format(vector_size, data_point_count))
 
 total_loss = torch.autograd.Variable(torch.zeros(1), requires_grad=True)
-sentances = X.groupby(level=0)
+sentances = X.groupby(level=0).apply(lambda x: torch.tensor(x.values))
 
-for i, sample in sentances:
-    out = feed_title(model, sample)
+for i, sample in sentances.items():
+    out = model(sample)
     loss = criterion(out, torch.tensor([y[i]]))
     total_loss = total_loss + loss
 
@@ -107,6 +93,6 @@ for i, sample in sentances:
         optimizer.step()
         total_loss = torch.autograd.Variable(torch.zeros(1), requires_grad=True)
 
-    if i % 1000 == 1:
+    if i % 100 == 1:
         print("{} out of {}, Sample \"{}\", score = {}, predicted score {},  loss = {}"
               .format(i, data_point_count, df.title[i], df.score[i], out[0], loss))
