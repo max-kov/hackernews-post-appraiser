@@ -46,25 +46,26 @@ y = df.score
 torch.manual_seed(1)
 
 
-class Model(nn.Module):
+class RNNModel(nn.Module):
     def __init__(self, input_size):
-        super(Model, self).__init__()
+        super(RNNModel, self).__init__()
 
         self.input_size = input_size
         self.hidden_size = 1000
         self.embedding_size = 1000
 
         self.embedding = nn.Embedding(self.input_size, self.embedding_size)
-        self.combined_to_hidden = nn.Linear(self.embedding_size + self.hidden_size, self.hidden_size)
+        self.hidden = nn.RNN(self.embedding_size, self.hidden_size, batch_first=True)
         self.hidden_to_out = nn.Linear(self.hidden_size, 1)
 
     def forward(self, input_sentence):
-        hidden = torch.zeros(self.hidden_size)
         embeddings = self.embedding(input_sentence)
+        _, hidden = self.hidden(embeddings.unsqueeze(0))
+        out = self.hidden_to_out(hidden[0][0])
 
-        for word in embeddings:
-            combined = torch.cat((word, hidden))
-            hidden = self.combined_to_hidden(combined)
+        return out
+
+
 
         out = self.hidden_to_out(hidden)
 
@@ -72,7 +73,7 @@ class Model(nn.Module):
 
 
 data_point_count = df.shape[0]
-model = Model(vector_size)
+model = RNNModel(vector_size)
 
 criterion = nn.SmoothL1Loss()
 optimizer = optim.SGD(model.parameters(), lr=0.001)
