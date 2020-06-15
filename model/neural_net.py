@@ -66,8 +66,22 @@ class RNNModel(nn.Module):
         return out
 
 
+class LSTMModel(nn.Module):
+    def __init__(self, input_size):
+        super(Model, self).__init__()
 
-        out = self.hidden_to_out(hidden)
+        self.input_size = input_size
+        self.hidden_size = 1000
+        self.embedding_size = 1000
+
+        self.embedding = nn.Embedding(self.input_size, self.embedding_size)
+        self.hidden_layer = nn.LSTM(self.embedding_size, self.hidden_size, batch_first=True)
+        self.hidden_to_out = nn.Linear(self.hidden_size, 1)
+
+    def forward(self, input_sentence):
+        embeddings = self.embedding(input_sentence)
+        _, (hidden, _) = self.hidden_layer(embeddings.unsqueeze(0))
+        out = self.hidden_to_out(hidden[0][0])
 
         return out
 
