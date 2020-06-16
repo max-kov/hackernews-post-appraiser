@@ -35,13 +35,15 @@ def process_titles(data):
     top_words = tokens.value_counts().index[:vector_size]
     word_table = {word: index for index, word in enumerate(top_words)}
     tokens = tokens[tokens.map(lambda x: x in word_table)]
-    tokens = tokens.map(word_table)
+    tokens = tokens.map(word_table).groupby(level=0).apply(lambda x: torch.tensor(x.values))
+    indeces = tokens.index
+    tokens = tokens.reset_index(drop=True)
 
-    return tokens, word_table
+    return tokens, indeces, word_table
 
 
-X, word_table = process_titles(df.title)
-y = df.score
+X, indeces, word_table = process_titles(df.title)
+y = df.score[indeces].reset_index(drop=True)
 
 torch.manual_seed(1)
 
