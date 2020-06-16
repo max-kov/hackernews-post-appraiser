@@ -1,5 +1,5 @@
 import pandas as pd
-from tools import nltk_tools
+from tools import nltk_tools, model_to_file
 import itertools
 import string
 import torch
@@ -119,3 +119,6 @@ for i, (sample, lengths) in enumerate(sentances):
         print("{} out of {}, Sample \"{}\", score = {}, predicted score {},  loss = {}"
               .format(i, data_point_count // batch_size, df.title[indeces[i * batch_size]], y[i * batch_size], out[0][0],
                       loss))
+
+model_to_file.save_model(model, "model_files/rnn_model")
+model_to_file.save_model(word_table, "model_files/rnn_word_table")
