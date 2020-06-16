@@ -58,17 +58,18 @@ class RNNModel(nn.Module):
         self.hidden = nn.RNN(self.embedding_size, self.hidden_size, batch_first=True)
         self.hidden_to_out = nn.Linear(self.hidden_size, 1)
 
-    def forward(self, input_sentence):
+    def forward(self, input_sentence, lengths):
         embeddings = self.embedding(input_sentence)
-        _, hidden = self.hidden(embeddings.unsqueeze(0))
-        out = self.hidden_to_out(hidden[0][0])
+        packed = nn.utils.rnn.pack_padded_sequence(embeddings, lengths, batch_first=True, enforce_sorted=False)
+        _, hidden = self.hidden(packed)
+        out = self.hidden_to_out(hidden[0]).double()
 
         return out
 
 
 class LSTMModel(nn.Module):
     def __init__(self, input_size):
-        super(Model, self).__init__()
+        super(LSTMModel, self).__init__()
 
         self.input_size = input_size
         self.hidden_size = 1000
@@ -94,20 +95,25 @@ optimizer = optim.SGD(model.parameters(), lr=0.001)
 
 print("Starting training - word vector length = {}, data points = {}".format(vector_size, data_point_count))
 
-total_loss = torch.autograd.Variable(torch.zeros(1), requires_grad=True)
-sentances = X.groupby(level=0).apply(lambda x: torch.tensor(x.values))
 
-for i, sample in sentances.items():
-    out = model(sample)
-    loss = criterion(out, torch.tensor([y[i]]))
-    total_loss = total_loss + loss
+def pad_f(batch):
+    return torch.nn.utils.rnn.pad_sequence(batch, batch_first=True), [len(x) for x in batch]
 
-    if i % 50 == 0:
-        optimizer.zero_grad()
-        total_loss.backward()
-        optimizer.step()
-        total_loss = torch.autograd.Variable(torch.zeros(1), requires_grad=True)
 
-    if i % 100 == 1:
+batch_size = 10
+sentances = torch.utils.data.DataLoader(X, batch_size=batch_size, collate_fn=pad_f)
+
+for i, (sample, lengths) in enumerate(sentances):
+    optimizer.zero_grad()
+
+    out = model(sample, lengths)
+    values = y[i * batch_size: (i + 1) * batch_size].values
+    loss = criterion(out, torch.tensor(values).unsqueeze(1))
+
+    loss.backward()
+    optimizer.step()
+
+    if i % 20 == 1:
         print("{} out of {}, Sample \"{}\", score = {}, predicted score {},  loss = {}"
-              .format(i, data_point_count, df.title[i], df.score[i], out[0], loss))
+              .format(i, data_point_count // batch_size, df.title[indeces[i * batch_size]], y[i * batch_size], out[0][0],
+                      loss))
