@@ -93,7 +93,7 @@ data_point_count = df.shape[0]
 model = RNNModel(vector_size)
 
 criterion = nn.SmoothL1Loss()
-optimizer = optim.SGD(model.parameters(), lr=0.001)
+optimizer = optim.Adam(model.parameters())
 
 print("Starting training - word vector length = {}, data points = {}".format(vector_size, data_point_count))
 
