@@ -5,7 +5,6 @@ import torch.nn as nn
 import torch.optim as optim
 
 from word_level_torch_vectorizer import process_titles
-
 from torch_models.rnn import RNNModel
 
 torch.manual_seed(0)
@@ -66,9 +65,9 @@ for epoch in range(n_of_epochs):
         loss.backward()
         optimizer.step()
 
-        if i%100==0:
-            print("Iter = {}, score = {}, predicted score {},  loss = {}".format(i, ys[0][0], out[0][0],loss))
+        if i % 100 == 0:
+            print("Iter = {}, score = {}, predicted score {},  loss = {}".format(i, ys[0][0], out[0][0], loss))
 
-        i+=1
+        i += 1
 
-    torch.save(model, "model_files/rnn_model.sav".format(epoch))
+    torch.save(model.state_dict(), "model_files/rnn_model.sav")
