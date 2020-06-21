@@ -6,11 +6,24 @@ import torch.optim as optim
 
 from word_level_torch_vectorizer import process_titles
 
-from model.torch_models.rnn import RNNModel
+from torch_models.rnn import RNNModel
 
 torch.manual_seed(0)
 
-df = pd.read_csv("tools/data.csv")[:500]
+
+def resample_dataset(data):
+    cutoff_score = 3
+    rescale_size = data[data.score == cutoff_score].count().iloc[0]
+    resampled_dataset = data[data.score >= cutoff_score]
+
+    for i in range(1, cutoff_score):
+        data_for_score = data[data.score == i]
+        resampled_dataset = pd.concat([resampled_dataset, data_for_score.sample(rescale_size)])
+
+    return resampled_dataset
+
+
+df = pd.read_csv("tools/data.csv")
 df = df.dropna(subset=["title"])
 
 vector_size = 10000
@@ -18,8 +31,9 @@ vector_size = 10000
 X, indeces, word_table = process_titles(df.title, vector_size)
 y = df.score[indeces].reset_index(drop=True)
 data = pd.concat([X, y], 1)
+data = resample_dataset(data)
 
-data_point_count = df.shape[0]
+data_point_count = data.shape[0]
 model = RNNModel(vector_size)
 
 criterion = nn.SmoothL1Loss()
