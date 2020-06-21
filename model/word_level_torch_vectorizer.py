@@ -33,7 +33,7 @@ def process_titles(data, vector_size, word_table=None):
     if word_table is None:
         word_table = {word: reserved_tokens + index for index, word in enumerate(top_words)}
     tokens = tokens.map(lambda x: word_table.get(x, 0))
-    tokens = tokens.groupby(level=0).apply(lambda x: torch.tensor(x.values))
+    tokens = tokens.groupby(level=0).apply(lambda x: torch.tensor(x.values)).rename("sentance_vector")
     indeces = tokens.index
     tokens = tokens.reset_index(drop=True)
 
