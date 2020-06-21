@@ -44,26 +44,31 @@ print("Starting training - word vector length = {}, data points = {}".format(vec
 
 def pad_f(batch):
     X = [x[0] for x in batch]
-    y = torch.Tensor([x[1] for x in batch]).double().unsqueeze(1)
+    y = torch.tensor([x[1] for x in batch]).double().unsqueeze(1)
     lengths = [len(x) for x in X]
     return torch.nn.utils.rnn.pad_sequence(X, batch_first=True), lengths, y
 
 
-batch_size = 128
+batch_size = 64
+n_of_epochs = 20
 sentances = torch.utils.data.DataLoader(data.values, batch_size=batch_size, collate_fn=pad_f, shuffle=True)
-
-for i, (sample, lengths, ys) in enumerate(sentances):
-    optimizer.zero_grad()
-
-    out = model(sample, lengths)
-    loss = criterion(out, ys)
-
-    loss.backward()
-    optimizer.step()
-
-    print("{} out of {}, Sample \"{}\", score = {}, predicted score {},  loss = {}"
-          .format(i, data_point_count // batch_size, df.title[indeces[i * batch_size]], y[i * batch_size], out[0][0],
-                  loss))
-
-torch.save(model, "model_files/rnn_model.sav")
 model_to_file.save_model(word_table, "model_files/rnn_word_table")
+
+for epoch in range(n_of_epochs):
+    print("epoch {}:".format(epoch))
+    i = 0
+    for sample, lengths, ys in sentances:
+        optimizer.zero_grad()
+
+        out = model(sample, lengths)
+        loss = criterion(out, ys)
+
+        loss.backward()
+        optimizer.step()
+
+        if i%100==0:
+            print("Iter = {}, score = {}, predicted score {},  loss = {}".format(i, ys[0][0], out[0][0],loss))
+
+        i+=1
+
+    torch.save(model, "model_files/rnn_model.sav".format(epoch))
