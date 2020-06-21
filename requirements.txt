@@ -24,6 +24,5 @@ requests==2.22.0
 scikit-learn==0.22.1
 scipy==1.4.1
 six==1.14.0
-https://download.pytorch.org/whl/cpu/torch-1.4.0%2Bcpu-cp38-cp38-linux_x86_64.whl
 urllib3==1.25.7
 Werkzeug==0.16.0
