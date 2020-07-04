@@ -36,6 +36,7 @@ div.test-input {
     justify-content: space-evenly;
     flex-flow: column;
     height: 100%;
+    transition: background-color 0.5s ease;
 }
 
 table.posts-table {

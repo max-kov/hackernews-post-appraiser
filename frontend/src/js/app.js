@@ -56,9 +56,25 @@ class App extends React.Component {
   };
 
   render() {
+    const white = {backgroundColor: "rgb(255, 255, 255)"}
+    const red = {backgroundColor: "rgb(241, 144, 131)"}
+    const blue = {backgroundColor: "rgb(157, 212, 254)"}
+    const green = {backgroundColor: "rgb(174, 252, 191)"}
+
+    var style = white;
+    if (!this.state.wasFetched) {
+      style = white;
+    } else if (this.state.score > 50){
+      style = green;
+    } else if (this.state.score > 10){
+      style = blue;
+    } else {
+      style = red;
+    }
+
     return (
       <div className="container">
-        <div className="test-input" onChange={this.handleChange}>
+        <div className="test-input" style={style} onChange={this.handleChange}>
           <h1>Hackernews post appraiser</h1>
           <TitleTextArea/>
           <Score score={this.state.score}/>
