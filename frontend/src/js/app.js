@@ -57,11 +57,14 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="container" onChange={this.handleChange}>
-        <h1>Hackernews post appraiser.</h1>
-        <TitleTextArea/>
-        {this.state.wasFetched && <Score score={this.state.score}/>}
-        <SimilarPostsTable posts={this.state.similarPosts}/>
+      <div className="container">
+        <div className="test-input" onChange={this.handleChange}>
+          <h1>Hackernews post appraiser</h1>
+          <TitleTextArea/>
+          <Score score={this.state.score}/>
+        </div>
+        <h2>Post statistics</h2>
+        <p>bla bla bla</p>
       </div>
     )
   }

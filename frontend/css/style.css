@@ -6,6 +6,11 @@
     --color3: rgba(211, 208, 203, 1);
 }
 
+html, body, div#root, div.container {
+    height: 100%;
+    margin: 0;
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--fg-color);
@@ -19,19 +24,18 @@ h1,h2,h3,h4,h5 {
 }
 
 input.post-title {
-    border-radius: 3px;
-    border: 1px solid;
-    border-color: var(--color3);
-    color: var(--fg-color);
+    background-color: transparent;
+    text-align: center;
+    border: 0;
+    outline: none;
 }
 
-div.container {
+div.test-input {
     display: flex;
     align-content: space-between;
     justify-content: space-evenly;
     flex-flow: column;
-    width: 80%;
-    margin: auto;
+    height: 100%;
 }
 
 table.posts-table {

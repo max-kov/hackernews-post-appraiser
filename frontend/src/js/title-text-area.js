@@ -2,7 +2,7 @@
 
 class TitleTextArea extends React.Component {
   render() {
-    return <input className='post-title'/>;
+    return <input autoFocus className='post-title'/>;
   }
 }
 
