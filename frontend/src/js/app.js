@@ -79,8 +79,6 @@ class App extends React.Component {
           <TitleTextArea/>
           <Score score={this.state.score}/>
         </div>
-        <h2>Post statistics</h2>
-        <p>bla bla bla</p>
       </div>
     )
   }

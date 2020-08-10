@@ -8,7 +8,7 @@ class Score extends React.Component {
   render() {
     return (
       <div>
-        <h4>I think your post will receive {this.props.score} points</h4>
+        <h4>I think your post will receive <div class="score-value">{this.props.score}</div> points</h4>
       </div>
     );
   }

@@ -21,6 +21,15 @@ h1,h2,h3,h4,h5 {
     display: flex;
     justify-content: space-around;
     text-align: center;
+    font-family: 'Red Rose', cursive;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+#score-value {
+    font-size: 30px
 }
 
 input.post-title {
