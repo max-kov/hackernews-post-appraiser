@@ -9,7 +9,7 @@ model_runner = model.ModelRunner()
 def score_post():
     payload = request.get_json()
     score = model_runner.predict(payload)
-    return str(score)
+    return str(round(score))
 
 
 if __name__ == "__main__":
