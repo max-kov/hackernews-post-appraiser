@@ -29,7 +29,10 @@ h1 {
 }
 
 #score-value {
-    font-size: 30px
+    font-size: 40px
+    justify-content: space-around;
+    display: flex;
+    font-weight: bold;
 }
 
 input.post-title {
