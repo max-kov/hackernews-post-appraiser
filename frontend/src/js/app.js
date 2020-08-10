@@ -40,19 +40,6 @@ class App extends React.Component {
     }
 
     scoreXhr.send(JSON.stringify(newTitle));
-
-    var similarPostsXhr = new XMLHttpRequest();
-    similarPostsXhr.open('GET', `https://hn.algolia.com/api/v1/search?query=${newTitle}&tags=story`);
-
-    similarPostsXhr.onreadystatechange = () => {
-      if (similarPostsXhr.readyState === XMLHttpRequest.DONE && similarPostsXhr.status === 200) {
-        self.setState({
-          similarPosts: JSON.parse(similarPostsXhr.responseText),
-        });
-      }
-    }
-
-    similarPostsXhr.send();
   };
 
   render() {
