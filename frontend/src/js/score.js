@@ -9,7 +9,7 @@ class Score extends React.Component {
     return (
       <div>
         <h4>I think your post will receive</h4>
-        <div className="score-value">{this.props.score}</div>
+        <div id="score-value">{this.props.score}</div>
         <h4>points</h4>
       </div>
     );
