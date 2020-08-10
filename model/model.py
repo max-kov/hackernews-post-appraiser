@@ -38,6 +38,8 @@ class ModelRunner:
     def run_RNN(self, title):
         vector_length = len(self.word_list)
         X, _, _ = process_titles(pd.Series([title]), vector_length, word_table=self.word_list)
+        if len(X) == 0:
+            return 0
         title_lengths = [len(X[0])]
         title_vectors = X[0].unsqueeze(0)
         return self.model(title_vectors, title_lengths)[0][0].item()
